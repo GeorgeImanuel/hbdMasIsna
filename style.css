@@ -1,0 +1,236 @@
+/* --- RESET & BACKGROUND DASAR --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Background Bintang (muncul setelah matrix selesai) */
+body.starry-bg {
+    background-image: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- MATRIX & COUNTDOWN --- */
+#matrix-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#countdown-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+}
+
+#countdown-number {
+    font-size: clamp(3rem, 15vw, 10rem); 
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    margin: 0;
+    color: #ff3399;
+    text-shadow: 0 0 10px #ff3399, 0 0 20px #ff3399, 0 0 40px #ff007f;
+    text-transform: uppercase;
+}
+
+/* --- WADAH KONTEN UTAMA --- */
+#main-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* --- STAGE BUKU 3D --- */
+#stage-buku {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1500px; /* Penting buat efek 3D */
+}
+
+.book {
+    width: 300px;
+    height: 400px;
+    position: relative;
+    transition: transform 0.6s ease-in-out;
+}
+
+.book.open {
+    transform: translateX(150px); /* Geser ke kanan saat dibuka biar seimbang di layar */
+}
+
+.paper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease-in-out;
+    transform-origin: left center; /* Titik lipat buku ada di kiri */
+    cursor: pointer;
+}
+
+.paper.flipped {
+    transform: rotateY(-180deg); /* Balik halaman ke kiri */
+}
+
+.front, .back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.front img, .back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+#cover-depan {
+    background: linear-gradient(135deg, #ff3399, #1b2735);
+    color: white;
+    text-align: center;
+}
+
+#btn-tutup-buku {
+    position: absolute;
+    bottom: 20px;
+    padding: 10px 20px;
+    background-color: #ff3399;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* --- STAGE SPAM FOTO (Padat & Looping) --- */
+/* --- STAGE SPAM FOTO (POLA LINGKARAN MUNCUL BERTAHAP) --- */
+#stage-spam-heap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-gallery {
+    position: relative;
+    width: 300px; /* Area lingkaran */
+    height: 300px;
+    /* Opsional: Hapus baris di bawah ini kalau nggak mau lingkarannya muter */
+    animation: spinGallery 30s linear infinite; 
+}
+
+.pop-img.heap-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;  /* Ukuran foto */
+    height: 80px;
+    margin-top: -40px; /* Offset agar benar-benar di tengah */
+    margin-left: -40px;
+    object-fit: cover;
+    border-radius: 50%; /* Dibuat bulat biar lebih estetik, kalau mau kotak ganti jadi 10px */
+    border: 3px solid #ff3399;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    opacity: 0; /* Disembunyikan sebelum waktunya muncul */
+
+    /* Animasi Pop-up memanggil variabel delay di bawah */
+    animation: popUpCircle 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards var(--delay);
+}
+
+/* RUMUS POLA LINGKARAN (12 FOTO)
+  360 derajat / 12 foto = Jarak tiap foto 30 derajat
+*/
+.heap-img:nth-child(1)  { --deg: 0deg;   --delay: 0.2s; }
+.heap-img:nth-child(2)  { --deg: 30deg;  --delay: 0.4s; }
+.heap-img:nth-child(3)  { --deg: 60deg;  --delay: 0.6s; }
+.heap-img:nth-child(4)  { --deg: 90deg;  --delay: 0.8s; }
+.heap-img:nth-child(5)  { --deg: 120deg; --delay: 1.0s; }
+.heap-img:nth-child(6)  { --deg: 150deg; --delay: 1.2s; }
+.heap-img:nth-child(7)  { --deg: 180deg; --delay: 1.4s; }
+.heap-img:nth-child(8)  { --deg: 210deg; --delay: 1.6s; }
+.heap-img:nth-child(9)  { --deg: 240deg; --delay: 1.8s; }
+.heap-img:nth-child(10) { --deg: 270deg; --delay: 2.0s; }
+.heap-img:nth-child(11) { --deg: 300deg; --delay: 2.2s; }
+.heap-img:nth-child(12) { --deg: 330deg; --delay: 2.4s; }
+
+/* FOTO SPESIAL DI TENGAH (MUNCUL PALING TERAKHIR) */
+.heap-img.center-foto {
+    --delay: 3s; 
+    width: 120px; 
+    height: 120px; 
+    margin-top: -60px; 
+    margin-left: -60px;
+    border-color: #fff; /* Border beda sendiri */
+    z-index: 100;
+    animation: popUpCenter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards var(--delay);
+}
+
+/* Keyframes untuk foto yang menyebar ke pinggir */
+@keyframes popUpCircle {
+    0% {
+        opacity: 0;
+        /* Mulai dari titik nol (tengah) dengan ukuran kecil */
+        transform: rotate(var(--deg)) translate(0px) rotate(calc(-1 * var(--deg))) scale(0);
+    }
+    100% {
+        opacity: 1;
+        /* Menyebar sejauh 140px dari tengah, dan foto tetap tegak */
+        transform: rotate(var(--deg)) translate(140px) rotate(calc(-1 * var(--deg))) scale(1);
+    }
+}
+
+/* Keyframes untuk foto terakhir di tengah */
+@keyframes popUpCenter {
+    0% { opacity: 0; transform: scale(0); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Keyframes agar seluruh lingkaran berputar perlahan */
+@keyframes spinGallery {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

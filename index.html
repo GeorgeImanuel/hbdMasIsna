@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+
+    <div id="countdown-container">
+        <h1 id="countdown-number">3</h1>
+    </div>
+
+    <div id="main-content" class="hidden">
+        
+        <div id="stage-buku">
+            <div class="book" id="my-book">
+                
+                <div class="paper" id="p3" style="z-index: 1;">
+                    <div class="front">
+                        <img src="foto4.jpg" alt="Foto 4">
+                        <button id="btn-tutup-buku">Tutup & Buka Kado Terakhir</button>
+                    </div>
+                    <div class="back"></div>
+                </div>
+
+                <div class="paper" id="p2" style="z-index: 2;">
+                    <div class="front">
+                        <img src="foto2.jpg" alt="Foto 2">
+                    </div>
+                    <div class="back">
+                        <img src="foto3.jpg" alt="Foto 3">
+                    </div>
+                </div>
+
+                <div class="paper" id="p1" style="z-index: 3;">
+                    <div class="front" id="cover-depan">
+                        <h2>Happy Birthday!</h2>
+                        <p>Klik untuk buka buku 📖</p>
+                    </div>
+                    <div class="back">
+                        <img src="foto1.jpg" alt="Foto 1">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="stage-spam-heap" class="hidden">
+            <div class="circle-gallery">
+                <img src="foto1.jpg" class="pop-img heap-img">
+                <img src="foto2.jpg" class="pop-img heap-img">
+                <img src="foto3.jpg" class="pop-img heap-img">
+                <img src="foto4.jpg" class="pop-img heap-img">
+                <img src="foto1.jpg" class="pop-img heap-img">
+                <img src="foto2.jpg" class="pop-img heap-img">
+                <img src="foto3.jpg" class="pop-img heap-img">
+                <img src="foto4.jpg" class="pop-img heap-img">
+                <img src="foto1.jpg" class="pop-img heap-img">
+                <img src="foto2.jpg" class="pop-img heap-img">
+                <img src="foto3.jpg" class="pop-img heap-img">
+                <img src="foto4.jpg" class="pop-img heap-img">
+                
+                <img src="https://instagram.fsrg5-1.fna.fbcdn.net/v/t51.2885-19/436312255_7154001814704042_4847835476144448520_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fsrg5-1.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2QE2pUneK5sM2Bgf43GO0cH3fJAxcqUdD_JXlIZZWMmjAm7liOi34DkepaLlx3zJocA&_nc_ohc=Zb3uwRUK288Q7kNvwE9ur8E&_nc_gid=QpTsf84x87TXCOOUvRJ5Yg&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfzWFIFNjKiLPYU78MCbbii6LwSkEQ18xqoIckTKsSKdzA&oe=69BC9E3A&_nc_sid=7a9f4b" class="pop-img heap-img center-foto">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
