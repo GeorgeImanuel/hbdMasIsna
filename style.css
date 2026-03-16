@@ -277,3 +277,50 @@ body.starry-bg {
     0% { opacity: 0; }
     100% { opacity: 1; }
 }
+
+@media screen and (max-width: 768px) {
+    
+    /* 1. Ukuran Buku Dikecilkan */
+    .book {
+        width: 160px;  /* Lebar buku dilipat (pas kebuka jadi 320px, aman di layar HP) */
+        height: 240px; /* Tinggi buku */
+    }
+    .book.open {
+        transform: translateX(80px); /* Geser cuma setengah dari 160px biar tetap di tengah */
+    }
+    #btn-tutup-buku {
+        font-size: 0.8rem; /* Teks tombol dikecilin */
+        padding: 8px 10px;
+        bottom: 10px;
+    }
+
+    /* 2. Teks Pesan Ultraman Disesuaikan */
+    #pesan-ultraman {
+        font-size: 1.2rem; /* Font lebih kecil */
+        top: 5%;
+        padding: 0 10px; /* Biar nggak mentok ke ujung layar HP */
+    }
+
+    /* 3. Foto Spesial Tengah Dikecilkan */
+    .frame-style.center-frame {
+        width: 140px; 
+        height: 140px;
+        top: -70px;  /* Ingat, selalu minus setengah dari width/height */
+        left: -70px;
+    }
+
+    /* 4. Foto-Foto Satelit yang Berputar Dikecilkan */
+    .frame-style.circle-frame {
+        width: 70px;
+        height: 70px;
+        top: -35px;
+        left: -35px;
+    }
+
+    /* 5. Jarak Orbit Lingkaran Dipersempit biar muat di HP */
+    @keyframes popUpCircle {
+        0% { transform: rotate(var(--deg)) translate(0px) rotate(calc(-1 * var(--deg))) scale(0); }
+        /* Jarak translate diubah dari 320px jadi cuma 130px */
+        100% { transform: rotate(var(--deg)) translate(130px) rotate(calc(-1 * var(--deg))) scale(1); }
+    }
+}
