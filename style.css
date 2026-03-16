@@ -141,8 +141,7 @@ body.starry-bg {
     z-index: 10;
 }
 
-/* --- STAGE SPAM FOTO (Padat & Looping) --- */
-/* --- STAGE SPAM FOTO (POLA LINGKARAN MUNCUL BERTAHAP) --- */
+/* --- STAGE SPAM FOTO (POLA LINGKARAN TETAP TEGAK) --- */
 #stage-spam-heap {
     position: absolute;
     top: 0;
@@ -155,82 +154,126 @@ body.starry-bg {
     align-items: center;
 }
 
+/* Kincir berputar 360 derajat */
 .circle-gallery {
     position: relative;
-    width: 300px; /* Area lingkaran */
+    width: 300px; 
     height: 300px;
-    /* Opsional: Hapus baris di bawah ini kalau nggak mau lingkarannya muter */
     animation: spinGallery 30s linear infinite; 
 }
 
-.pop-img.heap-img {
+/* Lengan orbit yang menyebar dari tengah ke luar */
+.orbit-pos {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 80px;  /* Ukuran foto */
-    height: 80px;
-    margin-top: -40px; /* Offset agar benar-benar di tengah */
-    margin-left: -40px;
-    object-fit: cover;
-    border-radius: 50%; /* Dibuat bulat biar lebih estetik, kalau mau kotak ganti jadi 10px */
-    border: 3px solid #ff3399;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    opacity: 0; /* Disembunyikan sebelum waktunya muncul */
-
-    /* Animasi Pop-up memanggil variabel delay di bawah */
+    width: 0; 
+    height: 0;
     animation: popUpCircle 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards var(--delay);
 }
 
-/* RUMUS POLA LINGKARAN (12 FOTO)
-  360 derajat / 12 foto = Jarak tiap foto 30 derajat
-*/
-.heap-img:nth-child(1)  { --deg: 0deg;   --delay: 0.2s; }
-.heap-img:nth-child(2)  { --deg: 30deg;  --delay: 0.4s; }
-.heap-img:nth-child(3)  { --deg: 60deg;  --delay: 0.6s; }
-.heap-img:nth-child(4)  { --deg: 90deg;  --delay: 0.8s; }
-.heap-img:nth-child(5)  { --deg: 120deg; --delay: 1.0s; }
-.heap-img:nth-child(6)  { --deg: 150deg; --delay: 1.2s; }
-.heap-img:nth-child(7)  { --deg: 180deg; --delay: 1.4s; }
-.heap-img:nth-child(8)  { --deg: 210deg; --delay: 1.6s; }
-.heap-img:nth-child(9)  { --deg: 240deg; --delay: 1.8s; }
-.heap-img:nth-child(10) { --deg: 270deg; --delay: 2.0s; }
-.heap-img:nth-child(11) { --deg: 300deg; --delay: 2.2s; }
-.heap-img:nth-child(12) { --deg: 330deg; --delay: 2.4s; }
+/* Sudut penyebaran untuk 12 foto */
+.orbit-pos:nth-child(1)  { --deg: 0deg;   --delay: 0.2s; }
+.orbit-pos:nth-child(2)  { --deg: 30deg;  --delay: 0.4s; }
+.orbit-pos:nth-child(3)  { --deg: 60deg;  --delay: 0.6s; }
+.orbit-pos:nth-child(4)  { --deg: 90deg;  --delay: 0.8s; }
+.orbit-pos:nth-child(5)  { --deg: 120deg; --delay: 1.0s; }
+.orbit-pos:nth-child(6)  { --deg: 150deg; --delay: 1.2s; }
+.orbit-pos:nth-child(7)  { --deg: 180deg; --delay: 1.4s; }
+.orbit-pos:nth-child(8)  { --deg: 210deg; --delay: 1.6s; }
+.orbit-pos:nth-child(9)  { --deg: 240deg; --delay: 1.8s; }
+.orbit-pos:nth-child(10) { --deg: 270deg; --delay: 2.0s; }
+.orbit-pos:nth-child(11) { --deg: 300deg; --delay: 2.2s; }
+.orbit-pos:nth-child(12) { --deg: 330deg; --delay: 2.4s; }
 
-/* FOTO SPESIAL DI TENGAH (MUNCUL PALING TERAKHIR) */
-.heap-img.center-foto {
+/* Posisi Lengan Foto Spesial di tengah (nggak ikut nyebar ke pinggir) */
+.orbit-pos.center-foto {
     --delay: 3s; 
-    width: 120px; 
-    height: 120px; 
-    margin-top: -60px; 
-    margin-left: -60px;
-    border-color: #fff; /* Border beda sendiri */
     z-index: 100;
-    animation: popUpCenter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards var(--delay);
+    animation: keepCenter 0.6s forwards var(--delay);
 }
 
-/* Keyframes untuk foto yang menyebar ke pinggir */
-@keyframes popUpCircle {
-    0% {
-        opacity: 0;
-        /* Mulai dari titik nol (tengah) dengan ukuran kecil */
-        transform: rotate(var(--deg)) translate(0px) rotate(calc(-1 * var(--deg))) scale(0);
-    }
-    100% {
-        opacity: 1;
-        /* Menyebar sejauh 140px dari tengah, dan foto tetap tegak */
-        transform: rotate(var(--deg)) translate(140px) rotate(calc(-1 * var(--deg))) scale(1);
-    }
+/* Bingkai foto (Counter-spin / Muter terbalik biar foto tetap tegak) */
+.frame-style {
+    position: absolute;
+    opacity: 0; 
+    /* Gabungan animasi muncul + muter terbalik */
+    animation: fadeInFrame 0.6s forwards var(--delay), 
+               counterSpinGallery 30s linear infinite;
 }
 
-/* Keyframes untuk foto terakhir di tengah */
-@keyframes popUpCenter {
-    0% { opacity: 0; transform: scale(0); }
-    100% { opacity: 1; transform: scale(1); }
+/* Bentuk Bingkai Lingkaran */
+.frame-style.circle-frame {
+    width: 150px;  
+    height: 150px;
+    top: -75px; 
+    left: -75px;
+    border-radius: 50%;
+    border: 3px solid #ff3399;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
-/* Keyframes agar seluruh lingkaran berputar perlahan */
+/* Bentuk Bingkai Foto Spesial (Tengah Paling Gede) */
+.frame-style.center-frame {
+    width: 220px;   /* Ukurannya 2x lipat lebih besar dari foto yang muter (110px) */
+    height: 220px;
+    top: -110px;    /* Selalu minus setengah dari width/height biar pas di tengah */
+    left: -110px;
+    border-radius: 50%; /* Balikin jadi bentuk lingkaran biasa */
+    border: 5px solid #fff; /* Border putih agak tebal biar beda sendiri */
+    box-shadow: 0 0 25px #ff3399; /* Dikasih efek cahaya pink di belakang fotonya */
+    overflow: hidden;
+}
+
+/* Aturan gambar di dalam bingkai */
+.frame-style img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#pesan-ultraman {
+    position: absolute;
+    top: 10%; /* Jarak dari atas layar */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    color: white;
+    text-shadow: 0 0 10px #ff3399, 0 0 20px #ff3399; /* Glow pink */
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+    pointer-events: none; /* Biar teksnya nggak nutupin area klik */
+    animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* --- KEYFRAMES --- */
 @keyframes spinGallery {
-    0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes counterSpinGallery {
+    100% { transform: rotate(-360deg); } /* Muter berlawanan */
+}
+
+@keyframes popUpCircle {
+    0% { transform: rotate(var(--deg)) translate(0px) rotate(calc(-1 * var(--deg))) scale(0); }
+    100% { transform: rotate(var(--deg)) translate(270px) rotate(calc(-1 * var(--deg))) scale(1); }
+}
+
+@keyframes keepCenter {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeInFrame {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }

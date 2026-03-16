@@ -55,8 +55,7 @@ const textInterval = setInterval(() => {
         
         // Hapus teks matrix & ganti ke background bintang
         countdownContainer.classList.add('hidden'); 
-        canvas.classList.add('hidden');
-        document.body.classList.add('starry-bg');
+        
         
         // Munculkan kontainer Buku & Galeri
         mainContent.classList.remove('hidden'); 
@@ -73,20 +72,30 @@ const p1 = document.getElementById('p1');
 const p2 = document.getElementById('p2');
 const btnTutupBuku = document.getElementById('btn-tutup-buku');
 
+const pesanUltraman = document.getElementById('pesan-ultraman');
+
 let bookState = 0; // 0: Cover, 1: Hal 1 Terbuka, 2: Hal 2 Terbuka
 
 // Klik Lembar 1 (Cover)
 p1.addEventListener('click', () => {
     if (bookState === 0) {
         p1.classList.add('flipped');
-        p1.style.zIndex = 1; 
         book.classList.add('open'); 
         bookState = 1;
+        pesanUltraman.classList.remove('hidden');
+
+        // JEDA Z-INDEX: Biar covernya muter melayang dulu, baru pindah ke urutan bawah
+        setTimeout(() => {
+            p1.style.zIndex = 1; 
+        }, 400); // 400ms = setengah perjalanan animasi
+
     } else if (bookState === 1) {
-        p1.classList.remove('flipped');
+        // Pas nutup, balikin z-index ke atas DULU biar nutupnya nutupin halaman 2
         p1.style.zIndex = 3; 
+        p1.classList.remove('flipped');
         book.classList.remove('open');
         bookState = 0;
+        pesanUltraman.classList.add('hidden');
     }
 });
 
@@ -108,5 +117,6 @@ p2.addEventListener('click', () => {
 btnTutupBuku.addEventListener('click', (e) => {
     e.stopPropagation(); // Biar halaman nggak ikutan nge-klik
     stageBuku.classList.add('hidden'); // Sembunyikan buku
+    pesanUltraman.classList.add('hidden');
     stageGaleriHeap.classList.remove('hidden'); // Ledakkan spam foto yang padat
 });
